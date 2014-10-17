@@ -1,4 +1,4 @@
-package New;
+package Create;
 
 import (
 	"github.com/AitorGuerrero/BadassCity/Domain/Entities/Game"
