@@ -1,10 +1,18 @@
 package Game;
 
-type Game struct {
-	Id int
+type Game interface {
+	Id() int
 }
 
-func New (id int) Game {
-	game := Game{Id : id};
+type game struct {
+	id int
+}
+
+func (this game) Id () int {
+	return this.id;
+}
+
+func New (id int) game {
+	game := game{id : id};
 	return game
 }

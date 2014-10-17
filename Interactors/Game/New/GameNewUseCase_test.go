@@ -12,10 +12,9 @@ type repositoryStub struct {
 
 func (this *repositoryStub) Save(game Game.Game) {
 	this.SavedCalled = true;
-	if game.Id != 5 {
+	if game.Id() != 5 {
 		this.T.Error("Saving id incorrect");
 	}
-
 }
 
 func TestCreateNewGame (t *testing.T) {

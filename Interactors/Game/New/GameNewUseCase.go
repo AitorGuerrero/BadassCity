@@ -1,6 +1,8 @@
 package New;
 
-import "github.com/AitorGuerrero/BadassCity/Domain/Entities/Game"
+import (
+	"github.com/AitorGuerrero/BadassCity/Domain/Entities/Game"
+)
 
 type Request struct {
 	Id int
@@ -16,7 +18,6 @@ func Init (comingRepository Repository) {
 	repository = comingRepository
 }
 func Execute (request Request) {
-	var game Game.Game;
-	game = Game.Game{Id: request.Id};
+	game := Game.New(request.Id);
 	repository.Save(game);
 }
