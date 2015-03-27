@@ -1,0 +1,11 @@
+{
+  "name": "Test City",
+  "neighborhoods": [
+    {
+      "name": "The first"
+    },
+    {
+      "name": "The second"
+    }
+  ]
+}
