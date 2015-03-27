@@ -8,6 +8,7 @@ import (
 
 type player interface {}
 type city interface {}
+type id uuid.UUID
 
 func New (aCity city) game {
 	return game{
@@ -15,6 +16,12 @@ func New (aCity city) game {
 		initiatedAt: time.Now(),
 		city: aCity,
 		running: false,
+	}
+}
+
+func Get (id id) game {
+	return game {
+		id: id,
 	}
 }
 
