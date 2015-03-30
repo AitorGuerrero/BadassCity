@@ -12,21 +12,21 @@ type id uuid.UUID
 
 func New (aCity city) game {
 	return game{
-		id: uuid.NewUUID(),
+		id: id(uuid.NewUUID()),
 		initiatedAt: time.Now(),
 		city: aCity,
 		running: false,
 	}
 }
 
-func Get (id id) game {
-	return game {
-		id: id,
+func Get (gameId string) *game {
+	return &game {
+		id: id(gameId),
 	}
 }
 
 type game struct {
-	id uuid.UUID
+	id id
 	initiatedAt time.Time
 	startedTime time.Time
 	running bool
@@ -38,6 +38,6 @@ func (aGame *game) AddPlayer(aPlayer player) {
 	aGame.players = append(aGame.players, aPlayer)
 }
 
-func (aGame game) Id() uuid.UUID {
+func (aGame game) Id() id {
 	return aGame.id
 }
