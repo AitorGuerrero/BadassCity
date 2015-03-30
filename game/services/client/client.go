@@ -2,11 +2,11 @@ package client
 
 import (
 	"github.com/AitorGuerrero/BadassCity/game/services"
+	commonClient "github.com/AitorGuerrero/BadassCity/common/services/client"
+
+	"github.com/koding/kite"
 )
 
-func Get() {
-	k := kite.New("BadassCity.game.client", "1.0.0")
-
-	client := k.NewClient("http://localhost:" + services.Port() + "/kite")
-	client.Dial()
+func Get() kite.Client {
+	return commonClient.Get("BadassCity.game.client", "0.0.1", services.Port())
 }
