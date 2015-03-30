@@ -1,6 +1,8 @@
 package user
 
 import (
+	"github.com/AitorGuerrero/BadassCity/persistence"
+
 	"code.google.com/p/go-uuid/uuid"
 )
 
@@ -27,4 +29,9 @@ func (aUser user) Id() uuid.UUID {
 
 func generateAuthHash (name string, password string) authHash {
 	return authHash(name + password)
+}
+
+func ExistsUserWithId (id string) bool {
+	entity :=
+	return persistence.findCount(id) > 1
 }
