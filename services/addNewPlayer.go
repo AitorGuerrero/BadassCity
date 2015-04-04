@@ -9,7 +9,10 @@ import (
 )
 
 func AddNewPlayer (gameId, userId string, q isValid.Query) (error) {
-	isValid, _ := q.Execute(userId)
+	isValid, error := q.Execute(userId)
+	if error != nil {
+		return errors.New("Server error")
+	}
 	if !isValid {
 		return errors.New("User is not valid")
 	}
