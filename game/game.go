@@ -1,8 +1,6 @@
 package game
 
 import (
-	"github.com/AitorGuerrero/BadassCity/persistence"
-
 	"code.google.com/p/go-uuid/uuid"
 	"time"
 )
@@ -26,7 +24,6 @@ func New (aCity city) *game {
 		city: aCity,
 		running: false,
 	}
-	persistence.Persist(aGame)
 	return aGame
 }
 

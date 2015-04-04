@@ -1,5 +1,9 @@
 package game
 
+import(
+	"time"
+)
+
 type serializedGame struct {
 	Id string
 	InitiatedAt time.Time
@@ -9,7 +13,7 @@ type serializedGame struct {
 
 func (aGame *game) serialize () interface{} {
 	return &serializedGame {
-		Id: aGame.id,
+		Id: string(aGame.id),
 		InitiatedAt: aGame.initiatedAt,
 		StartedTime: aGame.startedTime,
 		Running: aGame.running,

@@ -1,4 +1,4 @@
-package client
+package queries
 
 import (
 	commonClient "github.com/AitorGuerrero/BadassCity/common/services/client"
@@ -6,6 +6,12 @@ import (
 	"github.com/koding/kite"
 )
 
-func Get() *kite.Client {
+type Config struct {
+	Server string
+	Version string
+	Port string
+}
+
+func Client() *kite.Client {
 	return commonClient.Get("BadassCity.user.client", "0.0.1", "3635")
 }
