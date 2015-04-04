@@ -1,12 +1,12 @@
-package queries
+package isValid
 
-type IsValidInterface interface {
+type Query interface {
 	Execute(uId string) (bool, error)
 }
 
 type isValid struct {}
 
-func IsValid () IsValidInterface {
+func New () Service {
 	return &isValid{}
 }
 

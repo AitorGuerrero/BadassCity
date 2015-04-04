@@ -2,6 +2,7 @@ package queries
 
 import (
 	commonClient "github.com/AitorGuerrero/BadassCity/common/services/client"
+	"github.com/AitorGuerrero/BadassCity/config"
 
 	"github.com/koding/kite"
 )
@@ -13,5 +14,9 @@ type Config struct {
 }
 
 func Client() *kite.Client {
-	return commonClient.Get("BadassCity.user.client", "0.0.1", "3635")
+	return commonClient.Get(
+		config.UserService.Server,
+		config.UserService.Version,
+		config.UserService.Port,
+	)
 }

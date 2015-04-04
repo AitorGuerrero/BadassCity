@@ -7,10 +7,11 @@ import (
 	"errors"
 )
 
-type userId uuid.UUID
+type Id uuid.UUID
+type userId string
 
 type player struct {
-	id uuid.UUID
+	id Id
 	userId userId
 }
 
@@ -20,7 +21,7 @@ func New (aUserId string) (player, error) {
 		return player{}, errors.New("Invalid user id")
 	}
 	return player{
-		id: uuid.NewUUID(),
+		id: Id(uuid.NewUUID()),
 		userId: userId(aUserId),
 	}, nil
 }

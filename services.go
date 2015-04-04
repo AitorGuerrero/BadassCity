@@ -2,27 +2,18 @@ package main
 
 import (
 	"github.com/AitorGuerrero/BadassCity/services"
-	"github.com/AitorGuerrero/BadassCity/config"
+	"github.com/AitorGuerrero/BadassCity/user/queries/isValid"
 
 	"github.com/koding/kite"
 )
 
-func initServices(c config.KiteServiceConfig) {
-	k := kite.New(c.Name, c.Version)
-
-	InitNewService(k)
-	initAddNewPlayerService(k)
-
-	k.Config.Port = c.Port
-	k.Run()
-}
-
 func initAddNewPlayerService(k *kite.Kite) {
 	k.HandleFunc("add-new-player", func (r *kite.Request) (interface{}, error) {
 			args := r.Args.MustSlice()
-			gameId := args[0].MustString()
-			userId := args[1].MustString()
-			return nil, services.AddNewPlayer(gameId, userId)
+			gId := args[0].MustString()
+			uId := args[1].MustString()
+			q := isValid.New()
+			return nil, services.AddNewPlayer(gId, uId, q)
 		}).DisableAuthentication()
 }
 

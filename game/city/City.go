@@ -1,26 +1,23 @@
 package city
 
 import (
+	"github.com/AitorGuerrero/BadassCity/game/city/neighbourhood"
 	"code.google.com/p/go-uuid/uuid"
 )
 
-type City interface {
+type City interface {}
 
-}
-
-type Neighbourhood interface {
-
-}
+type Id uuid.UUID
 
 type city struct {
-	id uuid.UUID
+	id Id
 	name string
-	neighbourhoods []Neighbourhood
+	neighbourhoods []neighbourhood.Neighbourhood
 }
 
-func New (name string, neighbourhoods []Neighbourhood) city {
+func New (name string, neighbourhoods []neighbourhood.Neighbourhood) city {
 	return city{
-		id: uuid.NewUUID(),
+		id: Id(uuid.NewUUID()),
 		name: name,
 		neighbourhoods: neighbourhoods,
 	}

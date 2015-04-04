@@ -7,9 +7,9 @@ import (
 
 type player interface {}
 type city interface {}
-type id uuid.UUID
+type Id uuid.UUID
 type game struct {
-	id id
+	id Id
 	initiatedAt time.Time
 	startedTime time.Time
 	running bool
@@ -19,7 +19,7 @@ type game struct {
 
 func New (aCity city) *game {
 	aGame := &game{
-		id: id(uuid.NewUUID()),
+		id: Id(uuid.NewUUID()),
 		initiatedAt: time.Now(),
 		city: aCity,
 		running: false,
@@ -29,7 +29,7 @@ func New (aCity city) *game {
 
 func Get (gameId string) *game {
 	return &game {
-		id: id(gameId),
+		id: Id(gameId),
 	}
 }
 
@@ -38,6 +38,6 @@ func (aGame *game) AddPlayer(aPlayer player) {
 	aGame.players = append(aGame.players, aPlayer)
 }
 
-func (aGame game) Id() id {
+func (aGame game) Id() Id {
 	return aGame.id
 }

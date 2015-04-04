@@ -4,14 +4,17 @@ import (
 	"code.google.com/p/go-uuid/uuid"
 )
 
+type Neighbourhood interface {}
+type Id uuid.UUID
+
 type neighbourhood struct {
-	id uuid.UUID
+	id Id
 	name string
 }
 
 func New (name string) neighbourhood {
 	return neighbourhood{
-		id: uuid.NewUUID(),
+		id: Id(uuid.NewUUID()),
 		name: name,
 	}
 }
