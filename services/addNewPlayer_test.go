@@ -5,16 +5,16 @@ import (
 	"errors"
 )
 
-type query struct {
+type queryFake struct {
 	exists bool
 	error error
 }
 
-func (q query) Execute(userId string) (bool, error) {
+func (q queryFake) Execute(userId string) (bool, error) {
 	return q.exists, q.error
 }
 
-func (q query) Returns(e bool, er error) {
+func (q queryFake) Returns(e bool, er error) {
 	q.exists = e
 	q.error = er
 }
@@ -22,17 +22,17 @@ func (q query) Returns(e bool, er error) {
 func TestWhenUserIsNotValidShouldReturnAError (t *t.T) {
 	gameId := "gameId"
 	userId := "userId"
-	q := query{false, nil}
+	q := queryFake{false, nil}
 	error := AddNewPlayer(gameId, userId, q)
 	if error == nil {
 		t.Error("Should return a error")
 	}
 }
 
-func TestWhenUserIsNotValidShouldReturnNil (t *t.T) {
+func TestWhenUserIsValidShouldReturnNil (t *t.T) {
 	gameId := "gameId"
 	userId := "userId"
-	q := query{true, nil}
+	q := queryFake{true, nil}
 	error := AddNewPlayer(gameId, userId, q)
 	if error != nil {
 		t.Error("Should return nil as error")
@@ -43,7 +43,7 @@ func TestWhenServiceReturnsAErrorShouldReturnServerError (t *t.T) {
 	gameId := "gameId"
 	userId := "userId"
 	expectedError := "Server error"
-	q := query{true, errors.New("aError")}
+	q := queryFake{true, errors.New("aError")}
 	error := AddNewPlayer(gameId, userId, q)
 	if error.Error() != expectedError {
 		t.Error("Should return correct error message")
