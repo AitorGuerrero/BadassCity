@@ -9,3 +9,9 @@ type KiteServiceConfig struct {
 type MongoDBConfig struct {
 	Server string
 }
+
+type UserServiceConfig struct {
+	Server string
+	Version string
+	Port string
+}

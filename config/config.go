@@ -1,10 +1,6 @@
 package config
 
-import (
-	userQueries "github.com/AitorGuerrero/BadassCity/user/queries"
-)
-
-var UserService = userQueries.Config {
+var UserService = UserServiceConfig {
 	Server: "BadassCity.user.client",
 	Version: "0.0.1",
 	Port: "3635",

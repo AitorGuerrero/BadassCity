@@ -7,12 +7,6 @@ import (
 	"github.com/koding/kite"
 )
 
-type Config struct {
-	Server string
-	Version string
-	Port string
-}
-
 func Client() *kite.Client {
 	return commonClient.Get(
 		config.UserService.Server,
