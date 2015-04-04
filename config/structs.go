@@ -1,5 +1,9 @@
 package config
 
+type MainConfig struct {
+	CitiesConfigPath string
+}
+
 type KiteServiceConfig struct {
 	Name string
 	Version string

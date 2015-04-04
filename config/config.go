@@ -1,5 +1,9 @@
 package config
 
+var Main = MainConfig {
+	CitiesConfigPath: "aaa",
+}
+
 var UserService = UserServiceConfig {
 	Server: "BadassCity.user.client",
 	Version: "0.0.1",
