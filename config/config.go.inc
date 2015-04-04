@@ -1,14 +1,17 @@
 package config
 
-func Get() Config {
-	return Config {
-		MongoDBConfig {
-			Server: "mongodb://user:password@server:port/database",
-		},
-		KiteServiceConfig {
-			Name: "BaddassCity.user",
-			Version: "0.0.0",
-			Port: 3635,
-		},
-	}
+var Main = MainConfig {
+	CitiesConfigPath: "aaa",
+}
+
+var UserService = UserServiceConfig {
+	Server: "BadassCity.user.client",
+	Version: "0.0.1",
+	Port: "3635",
+}
+
+var Kite = KiteServiceConfig {
+	Name: "BaddassCity.game",
+	Version: "0.0.0",
+	Port: 3634,
 }
