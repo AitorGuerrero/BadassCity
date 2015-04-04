@@ -23,7 +23,7 @@ func TestWhenUserIsNotValidShouldReturnAError (t *t.T) {
 	userId := "userId"
 	q := query{false, nil}
 	error := AddNewPlayer(gameId, userId, q)
-	if error != nil {
+	if error == nil {
 		t.Error("Should return a error")
 	}
 }

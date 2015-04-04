@@ -1,7 +1,7 @@
 package player
 
 import (
-	userQueries "github.com/AitorGuerrero/BadassCity/user/queries"
+	"github.com/AitorGuerrero/BadassCity/user/queries/isValid"
 
 	"code.google.com/p/go-uuid/uuid"
 	"errors"
@@ -16,7 +16,7 @@ type player struct {
 }
 
 func New (aUserId string) (player, error) {
-	isValid, _ := userQueries.IsValid().Execute(aUserId)
+	isValid, _ := isValid.New().Execute(aUserId)
 	if isValid {
 		return player{}, errors.New("Invalid user id")
 	}
