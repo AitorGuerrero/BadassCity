@@ -7,18 +7,22 @@ import (
 
 type City interface {}
 
-type Id uuid.UUID
+type id uuid.UUID
 
 type city struct {
-	id Id
+	id id
 	name string
 	neighbourhoods []neighbourhood.Neighbourhood
 }
 
-func New (name string, neighbourhoods []neighbourhood.Neighbourhood) city {
+func New (id id, name string, neighbourhoods []neighbourhood.Neighbourhood) city {
 	return city{
-		id: Id(uuid.NewUUID()),
+		id: id,
 		name: name,
 		neighbourhoods: neighbourhoods,
 	}
+}
+
+func NewId () id {
+	return id(uuid.NewUUID())
 }

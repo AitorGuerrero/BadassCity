@@ -4,17 +4,19 @@ import (
 	"code.google.com/p/go-uuid/uuid"
 )
 
-type Id uuid.UUID
+type Player interface {}
+type id uuid.UUID
 type userId string
 
 type player struct {
-	id Id
+	id id
 	userId userId
 }
 
-func New (aUserId string) (player, error) {
-	return player{
-		id: Id(uuid.NewUUID()),
-		userId: userId(aUserId),
-	}, nil
+func New (i id, ui string) (player) {
+	return player{i, userId(ui)}
+}
+
+func NewId () {
+	return id(uuid.NewUUID())
 }

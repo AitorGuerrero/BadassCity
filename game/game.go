@@ -1,43 +1,32 @@
 package game
 
 import (
+	"github.com/AitorGuerrero/BadassCity/game/city"
+
 	"code.google.com/p/go-uuid/uuid"
-	"time"
 )
 
-type player interface {}
-type city interface {}
-type Id uuid.UUID
+type Game interface {}
+type id uuid.UUID
 type game struct {
-	id Id
-	initiatedAt time.Time
-	startedTime time.Time
+	id id
+	city city.City
 	running bool
-	players []player
-	city city
 }
 
-func New (aCity city) *game {
-	aGame := &game{
-		id: Id(uuid.NewUUID()),
-		initiatedAt: time.Now(),
-		city: aCity,
-		running: false,
-	}
-	return aGame
-}
-
-func Get (gameId string) *game {
-	return &game {
-		id: Id(gameId),
+func New (i id, c city.City) *game {
+	return &game{
+		i,
+		c,
+		false,
 	}
 }
 
-
-func (aGame *game) AddPlayer(aPlayer player) {
-	aGame.players = append(aGame.players, aPlayer)
+func NewId() id {
+	i := id(uuid.NewUUID())
+	return i
 }
 
-func (aGame game) Id() Id {
-	return aGame.id
+func (g *game) Id() *id {
+	return &g.id
 }
