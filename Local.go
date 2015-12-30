@@ -50,7 +50,7 @@ func (l *local) StartABusiness(b business) error {
 }
 
 func (l *local) collectBenefits() {
-	l.owner.getTransaction(transaction{l.business.benefits()})
+	l.owner.getTransaction(economy.NewTransaction(l.business.benefits()))
 }
 
 func (l *local) initPaymentTicker() {

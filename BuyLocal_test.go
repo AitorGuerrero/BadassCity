@@ -32,7 +32,7 @@ func TestPlayerShouldHaveANegativeTransaction(t *t.T) {
 	p := givenAPlayerWithEnoughMoney()
 
 	p.BuyLocal(&l)
-	if (p.merchant.wallet.transactions[1].a != -30) {
+	if (p.merchant.wallet.transactions[1].Amount() != -30) {
 		t.Error("Should have a negative transaction")
 	}
 }
@@ -43,7 +43,7 @@ func TestOwnerShouldHaveATransaction(t *t.T) {
 	o := l.owner
 
 	p.BuyLocal(&l)
-	if (o.wallet.transactions[0].a != 30) {
+	if (o.wallet.transactions[0].Amount() != 30) {
 		t.Error("Should have a transaction")
 	}
 }
@@ -66,6 +66,6 @@ func givenAPlayerWithNotEnoughMoney() player {
 
 func givenAPlayerWithMoney(m economy.Money) player {
 	p := player{}
-	p.wallet.transactions = append(p.wallet.transactions, transaction{m})
+	p.wallet.transactions = append(p.wallet.transactions, economy.NewTransaction(m))
 	return p
 }

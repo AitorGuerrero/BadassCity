@@ -1,5 +1,8 @@
 package BadassCity
-import t "testing"
+import (
+	t "testing"
+	"github.com/AitorGuerrero/BadassCity/economy"
+)
 
 func TestGivenALocalWithNotEnoughRoomShouldThrow(t *t.T) {
 	l := makeFakeLocal()
@@ -14,7 +17,7 @@ func TestGivenALocalWithNotEnoughRoomShouldThrow(t *t.T) {
 func TestGivenAOwnerWithNotEnoughMoneyShouldThrow(t *t.T) {
 	l := makeFakeLocal()
 	b := givenABusiness()
-	l.owner.wallet.transactions = []transaction{transaction{5}}
+	l.owner.wallet.transactions = []economy.Transaction{economy.NewTransaction(5)}
 	err := l.StartABusiness(b);
 	if _, ok := err.(notEnoughMoney); !ok{
 		t.Error("should throw notEnoughMoney error. Thrown: ", err)
