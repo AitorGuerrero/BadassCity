@@ -9,7 +9,7 @@ func NewPlayer() player {
 }
 
 func (p *player) BuyLocal(l *local) (err error) {
-	err = trespassTransaction(l.price, &(p.merchant), l.owner)
+	err = p.merchant.wallet.TransferTo(&l.owner.wallet, l.price)
 	if (err != nil) {
 		return
 	}

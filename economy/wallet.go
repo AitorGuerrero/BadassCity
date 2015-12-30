@@ -42,3 +42,12 @@ func (w *Wallet) GetTransaction(a Money) (err error, t Transaction) {
 	t = Transaction{a}
 	return
 }
+
+func (from *Wallet) TransferTo (to *Wallet, amount Money) (err error) {
+	err, t := from.GetTransaction(amount)
+	if err != nil {
+		return
+	}
+	to.AddTransaction(t)
+	return
+}
