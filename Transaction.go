@@ -1,14 +1,14 @@
 package BadassCity
 
 type transaction struct {
-	a float32
+	a money
 }
 
-func (t transaction) amount() float32 {
+func (t transaction) amount() money {
 	return t.a
 }
 
-func trespassTransaction (amount float32, giver, receiver merchant) (err error) {
+func trespassTransaction (amount money, giver, receiver *merchant) (err error) {
 	err, t := giver.giveTransaction(amount)
 	if err != nil {
 		return
