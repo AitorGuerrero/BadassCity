@@ -7,7 +7,7 @@ type wallet struct {
 
 type merchant interface {
 	getTransaction(transaction)
-	giveTransaction(float32) transaction
+	giveTransaction(float32) (error, transaction)
 }
 
 func (w *wallet) totalAmount() (amount float32) {

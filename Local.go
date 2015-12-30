@@ -5,6 +5,10 @@ type local struct {
 	o localOwner
 }
 
+type localOwner interface {
+	merchant
+}
+
 func (l local) price() float32 {
 	return l.p
 }
