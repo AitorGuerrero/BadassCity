@@ -41,7 +41,7 @@ func (l *local) StartABusiness(b business) error {
 		return notEnoughRoom{}
 	}
 	if err, _ := l.owner.giveTransaction(l.priceForStartABusiness(b)); err != nil {
-		return notEnoughMoney{}
+		return economy.NotEnoughMoney{}
 	}
 	l.business = b
 	l.initPaymentTicker()
@@ -81,7 +81,7 @@ func (l local) canImproveBusiness() (error) {
 		return totallyImprovedBusiness{}
 	}
 	if !l.owner.hasEnoughMoney(l.priceForImprove()) {
-		return notEnoughMoney{}
+		return economy.NotEnoughMoney{}
 	}
 
 	return nil
