@@ -39,13 +39,3 @@ func givenABusiness() business {
 		priceForStartPerRoom: 10,
 	}}
 }
-
-func givenAMerchant() *merchant {
-	return &merchant{
-		wallet: wallet{
-			transactions: []transaction{
-				transaction{a: money(20)},
-			},
-		},
-	}
-}
