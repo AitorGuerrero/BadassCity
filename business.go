@@ -45,6 +45,11 @@ func (b business) priceForImprove() money {
 	return b.priceForImprovePerRoom().multiply(float32(b.room))
 }
 
-func (b *business) improve() {
+func (b *business) improve() error {
+	if b.isTotallyImproved() {
+		return totallyImprovedBusiness{}
+	}
 	b.level = b.level.increase()
+
+	return nil
 }

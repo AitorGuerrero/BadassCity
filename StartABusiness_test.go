@@ -2,7 +2,7 @@ package BadassCity
 import t "testing"
 
 func TestGivenALocalWithNotEnoughRoomShouldThrow(t *t.T) {
-	l := givenALocal()
+	l := makeFakeLocal()
 	l.room = 1
 	b := givenABusiness()
 	err := l.StartABusiness(b);
@@ -12,9 +12,9 @@ func TestGivenALocalWithNotEnoughRoomShouldThrow(t *t.T) {
 }
 
 func TestGivenAOwnerWithNotEnoughMoneyShouldThrow(t *t.T) {
-	l := givenALocal()
+	l := makeFakeLocal()
 	b := givenABusiness()
-	l.o.wallet.transactions = []transaction{transaction{5}}
+	l.owner.wallet.transactions = []transaction{transaction{5}}
 	err := l.StartABusiness(b);
 	if _, ok := err.(notEnoughMoney); !ok{
 		t.Error("should throw notEnoughMoney error. Thrown: ", err)
@@ -22,13 +22,13 @@ func TestGivenAOwnerWithNotEnoughMoneyShouldThrow(t *t.T) {
 }
 
 func TestOwnerShouldSpendTheMoney(t *t.T) {
-	l := givenALocal()
+	l := makeFakeLocal()
 	b := givenABusiness()
 	err := l.StartABusiness(b);
 	if err != nil{
 		t.Error(err)
 	}
-	if l.o.availableMoney() > 0 {
+	if l.owner.availableMoney() > 0 {
 		t.Error("Should have spent all the money")
 	}
 }
@@ -38,10 +38,6 @@ func givenABusiness() business {
 		neededRoom: 2,
 		priceForStartPerRoom: 10,
 	}}
-}
-
-func givenALocal() local {
-	return local{room: 2, o: givenAMerchant()}
 }
 
 func givenAMerchant() *merchant {

@@ -12,19 +12,11 @@ func (localDoesNotHaveABusiness) Error() string {
 }
 
 type local struct {
-	p money
-	o *merchant
-	business business
-	room localRoom
+	price       money
+	owner       *merchant
+	business    business
+	room        localRoom
 	hasBusiness bool
-}
-
-func (l local) price() money {
-	return l.p
-}
-
-func (l local) owner() *merchant {
-	return l.o
 }
 
 func (l local) hasEnoughRoom(r localRoom) bool {
@@ -40,14 +32,14 @@ func (l local) priceForImprove() money {
 }
 
 func (l *local) changeOwner(o *merchant) {
-	l.o = o
+	l.owner = o
 }
 
 func (l *local) StartABusiness(b business) error {
 	if l.hasEnoughRoom(b.model.neededRoom) {
 		return notEnoughRoom{}
 	}
-	if err, _ := l.o.giveTransaction(l.priceForStartABusiness(b)); err != nil {
+	if err, _ := l.owner.giveTransaction(l.priceForStartABusiness(b)); err != nil {
 		return notEnoughMoney{}
 	}
 	l.business = b
@@ -57,7 +49,7 @@ func (l *local) StartABusiness(b business) error {
 }
 
 func (l *local) collectBenefits() {
-	l.o.getTransaction(transaction{l.business.benefits()})
+	l.owner.getTransaction(transaction{l.business.benefits()})
 }
 
 func (l *local) initPaymentTicker() {
@@ -66,18 +58,30 @@ func (l *local) initPaymentTicker() {
 	})
 }
 
-func (l *local) ImproveBusiness() error {
-	if (!l.hasBusiness) {
+func (l *local) ImproveBusiness() (err error) {
+	if err = l.canImproveBusiness(); err != nil {
+		return
+	}
+	if err, _ = l.owner.giveTransaction(l.priceForImprove()); err != nil {
+		return
+	}
+	if err = l.business.improve(); err != nil {
+		return
+	}
+
+	return
+}
+
+func (l local) canImproveBusiness() (error) {
+	if !l.hasBusiness {
 		return localDoesNotHaveABusiness{}
 	}
 	if l.business.isTotallyImproved() {
 		return totallyImprovedBusiness{}
 	}
-	err, _ := l.o.giveTransaction(l.priceForImprove())
-	if (err != nil) {
+	if !l.owner.hasEnoughMoney(l.priceForImprove()) {
 		return notEnoughMoney{}
 	}
-	l.business.improve()
 
 	return nil
 }
