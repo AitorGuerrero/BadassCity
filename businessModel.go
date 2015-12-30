@@ -1,9 +1,10 @@
 package BadassCity
+import "github.com/AitorGuerrero/BadassCity/economy"
 
 type businessModel struct {
-	priceForStartPerRoom money
+	priceForStartPerRoom economy.Money
 	neededRoom localRoom
 	maxLevel businessLevel
-	pricesForImprovePerRoom map[businessLevel]money
-	revenueByLevel map[businessLevel]money
+	pricesForImprovePerRoom map[businessLevel]economy.Money
+	revenueByLevel map[businessLevel]economy.Money
 }

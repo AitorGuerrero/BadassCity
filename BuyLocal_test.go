@@ -1,6 +1,9 @@
 package BadassCity
 
-import t "testing"
+import (
+	t "testing"
+	"github.com/AitorGuerrero/BadassCity/economy"
+)
 
 func TestGivenAPlayerWithNotEnoughMoneyShouldThrow(t *t.T) {
 	p := givenAPlayerWithNotEnoughMoney()
@@ -46,7 +49,7 @@ func TestOwnerShouldHaveATransaction(t *t.T) {
 }
 
 func givenALocalOwnedByNpcOwner() (l local) {
-	localPrice := money(30)
+	localPrice := economy.Money(30)
 	l = local{price: localPrice}
 	l.owner = &merchant{}
 
@@ -54,14 +57,14 @@ func givenALocalOwnedByNpcOwner() (l local) {
 }
 
 func givenAPlayerWithEnoughMoney() player {
-	return givenAPlayerWithMoney(money(30))
+	return givenAPlayerWithMoney(economy.Money(30))
 }
 
 func givenAPlayerWithNotEnoughMoney() player {
-	return givenAPlayerWithMoney(money(10))
+	return givenAPlayerWithMoney(economy.Money(10))
 }
 
-func givenAPlayerWithMoney(m money) player {
+func givenAPlayerWithMoney(m economy.Money) player {
 	p := player{}
 	p.wallet.transactions = append(p.wallet.transactions, transaction{m})
 	return p

@@ -1,4 +1,5 @@
 package BadassCity
+import "github.com/AitorGuerrero/BadassCity/economy"
 
 type localRoom int
 
@@ -12,7 +13,7 @@ func (localDoesNotHaveABusiness) Error() string {
 }
 
 type local struct {
-	price       money
+	price       economy.Money
 	owner       *merchant
 	business    business
 	room        localRoom
@@ -23,11 +24,11 @@ func (l local) hasEnoughRoom(r localRoom) bool {
 	return l.room < r
 }
 
-func (l local) priceForStartABusiness(b business) money {
-	return b.model.priceForStartPerRoom.multiply(float32(l.room))
+func (l local) priceForStartABusiness(b business) economy.Money {
+	return b.model.priceForStartPerRoom.Multiply(float32(l.room))
 }
 
-func (l local) priceForImprove() money {
+func (l local) priceForImprove() economy.Money {
 	return l.business.priceForImprove()
 }
 

@@ -1,4 +1,5 @@
 package BadassCity
+import "github.com/AitorGuerrero/BadassCity/economy"
 
 type businessLevel int
 
@@ -29,20 +30,20 @@ func (b business) isTotallyImproved() bool {
 	return b.level.isGreaterOrEqualThan(b.model.maxLevel)
 }
 
-func (b business) priceForImprovePerRoom() money {
+func (b business) priceForImprovePerRoom() economy.Money {
 	return b.model.pricesForImprovePerRoom[b.level]
 }
 
-func (b business) benefitsPerRoom() money {
+func (b business) benefitsPerRoom() economy.Money {
 	return b.model.revenueByLevel[b.level]
 }
 
-func (b business) benefits() money {
-	return b.benefitsPerRoom().multiply(float32(b.room))
+func (b business) benefits() economy.Money {
+	return b.benefitsPerRoom().Multiply(float32(b.room))
 }
 
-func (b business) priceForImprove() money {
-	return b.priceForImprovePerRoom().multiply(float32(b.room))
+func (b business) priceForImprove() economy.Money {
+	return b.priceForImprovePerRoom().Multiply(float32(b.room))
 }
 
 func (b *business) improve() error {
