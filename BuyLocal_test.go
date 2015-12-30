@@ -49,10 +49,10 @@ func TestOwnerShouldHaveATransaction(t *t.T) {
 }
 
 func givenALocalOwnedByNpcOwner() (l local) {
-	localPrice := economy.Money(30)
-	l = local{price: localPrice}
-	l.owner = &merchant{}
-
+	l = local{
+		price: economy.Money(30),
+		owner: &merchant{},
+	}
 	return
 }
 
@@ -66,6 +66,6 @@ func givenAPlayerWithNotEnoughMoney() player {
 
 func givenAPlayerWithMoney(m economy.Money) player {
 	p := player{}
-	p.wallet.AddTransaction(economy.NewTransaction(m))
+	p.wallet.AddTransaction(economy.Transaction{m})
 	return p
 }

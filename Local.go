@@ -40,7 +40,7 @@ func (l *local) StartABusiness(b business) error {
 	if l.hasEnoughRoom(b.model.neededRoom) {
 		return notEnoughRoom{}
 	}
-	if err, _ := l.owner.giveTransaction(l.priceForStartABusiness(b)); err != nil {
+	if err, _ := l.owner.wallet.GetTransaction(l.priceForStartABusiness(b)); err != nil {
 		return economy.NotEnoughMoney{}
 	}
 	l.business = b
@@ -50,7 +50,7 @@ func (l *local) StartABusiness(b business) error {
 }
 
 func (l *local) collectBenefits() {
-	l.owner.getTransaction(economy.NewTransaction(l.business.benefits()))
+	l.owner.wallet.AddTransaction(economy.Transaction{l.business.benefits()})
 }
 
 func (l *local) initPaymentTicker() {
@@ -63,7 +63,7 @@ func (l *local) ImproveBusiness() (err error) {
 	if err = l.canImproveBusiness(); err != nil {
 		return
 	}
-	if err, _ = l.owner.giveTransaction(l.priceForImprove()); err != nil {
+	if err, _ = l.owner.wallet.GetTransaction(l.priceForImprove()); err != nil {
 		return
 	}
 	if err = l.business.improve(); err != nil {
@@ -80,7 +80,7 @@ func (l local) canImproveBusiness() (error) {
 	if l.business.isTotallyImproved() {
 		return totallyImprovedBusiness{}
 	}
-	if !l.owner.hasEnoughMoney(l.priceForImprove()) {
+	if !l.owner.wallet.HasEnoughMoney(l.priceForImprove()) {
 		return economy.NotEnoughMoney{}
 	}
 
