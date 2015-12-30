@@ -14,11 +14,10 @@ type player struct {
 }
 
 func (p *player) BuyLocal(l *local) (err error) {
-	price := l.price()
-	if err = p.spend(price); err != nil {
+	err = trespassTransaction(l.price(), p, l.o)
+	if (err != nil) {
 		return
 	}
-	l.o.giveTransaction(transaction{price})
  	l.changeOwner(p)
 
 	return
@@ -33,6 +32,20 @@ func (pl *player) spend (a float32) (err error) {
 		err = errors.New("Player does not have enough money")
 		return
 	}
-	pl.giveTransaction(transaction{-a})
+	pl.getTransaction(transaction{-a})
+	return
+}
+
+func (pl *player) getTransaction(t transaction) {
+	pl.w.transactions = append(pl.w.transactions, t)
+}
+
+func (pl *player) giveTransaction(a float32) (err error, t transaction) {
+	if !pl.hasEnoughMoney(a) {
+		err = errors.New("Player does not have enough money")
+		return
+	}
+	pl.getTransaction(transaction{-a})
+	t = transaction{a}
 	return
 }
