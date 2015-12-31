@@ -17,13 +17,13 @@ type payer interface {
 
 type loyalty int
 
-type Gangster struct {
+type gangster struct {
 	payer payer
 	clock timedEvents.Clock
 	loyalty loyalty
 }
 
-func (g *Gangster) changePayer(p payer) {
+func (g *gangster) changePayer(p payer) {
 	g.payer = p
 	g.clock.AddTicker(daysForPayment, func() {
 		err, _ := p.getPayment(g.payment())
@@ -33,10 +33,10 @@ func (g *Gangster) changePayer(p payer) {
 	})
 }
 
-func (g *Gangster) payment() economy.Money {
+func (g *gangster) payment() economy.Money {
 	return payment
 }
 
-func (g *Gangster) decreaseLoyalty(l loyalty) {
+func (g *gangster) decreaseLoyalty(l loyalty) {
 	g.loyalty = g.loyalty - loyalty(math.Abs(float64(l)))
 }
