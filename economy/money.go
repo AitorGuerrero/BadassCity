@@ -1,6 +1,6 @@
 package economy
 
-type Money int
+type Money uint
 
 const (
 	Unit = Money(1)
