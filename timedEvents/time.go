@@ -1,22 +1,13 @@
 package timedEvents
 
-import "time"
-
-type daysAmount time.Duration
+type DaysAmount int
 
 const (
-	Day = daysAmount(dayDuration)
+	Day = DaysAmount(1)
 	Week = Day * 7
-	dayDuration = time.Duration(time.Second * 2)
-	localPaymentPeriod = daysAmount(7)
-	LocalPaymentDuration = daysAmount(time.Duration(localPaymentPeriod) * dayDuration)
 )
 
-func InitTicker (days daysAmount, callback func()) {
-	ticker := time.NewTicker(time.Duration(days))
-	go func() {
-		for range ticker.C {
-			callback()
-		}
-	}()
+type Clock interface {
+	AddTicker(days DaysAmount, callback func())
+	AddTTimer(days DaysAmount, callback func())
 }

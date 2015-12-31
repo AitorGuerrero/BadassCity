@@ -2,6 +2,8 @@ package BadassCity
 import "github.com/AitorGuerrero/BadassCity/economy"
 import "github.com/AitorGuerrero/BadassCity/timedEvents"
 
+const localPaymentDuration = timedEvents.Week
+
 type localRoom int
 
 type localOwner struct {
@@ -19,6 +21,7 @@ type local struct {
 	business    business
 	room        localRoom
 	hasBusiness bool
+	clock 		timedEvents.Clock
 }
 
 func (l local) hasEnoughRoom(r localRoom) bool {
@@ -55,7 +58,7 @@ func (l *local) collectBenefits() {
 }
 
 func (l *local) initPaymentTicker() {
-	timedEvents.InitTicker(timedEvents.LocalPaymentDuration, func() {
+	l.clock.AddTicker(localPaymentDuration, func() {
 		l.collectBenefits()
 	})
 }

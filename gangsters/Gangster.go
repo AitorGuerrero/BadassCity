@@ -15,11 +15,12 @@ type payer interface {
 
 type Gangster struct {
 	payer payer
+	clock timedEvents.Clock
 }
 
 func (g *Gangster) changePayer(p payer) {
 	g.payer = p
-	timedEvents.InitTicker(daysForPayment, func() {
+	g.clock.AddTicker(daysForPayment, func() {
 		p.getPayment(g.payment())
 	})
 }

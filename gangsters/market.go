@@ -12,6 +12,7 @@ const (
 
 type market struct {
 	gangsters []*Gangster
+	clock timedEvents.Clock
 }
 
 type GangsterNotInTheMarket struct {}
@@ -19,10 +20,10 @@ func (GangsterNotInTheMarket) Error () string {
 	return "The gangster is not in the market"
 }
 
-func NewMarket() market {
-	m := market{}
+func NewMarket(clock timedEvents.Clock) *market {
+	m := &market{clock: clock}
 	m.createInitialGangsters()
-	m.initGangsterCreationTimer()
+	m.initGangsterCreationTicker()
 	return m
 }
 
@@ -47,7 +48,7 @@ func (m *market) createInitialGangsters () {
 }
 
 func (m *market) createGangster() {
-	m.gangsters = append(m.gangsters, &Gangster{})
+	m.gangsters = append(m.gangsters, &Gangster{clock: m.clock})
 }
 
 func (m market) gangsterIndex(g *Gangster) (err error, matchingIndex int) {
@@ -74,8 +75,8 @@ func (m *market) detachGangster(g *Gangster) error {
 	return nil
 }
 
-func (m *market) initGangsterCreationTimer() {
-	timedEvents.InitTicker(gangsterCreationTimeRate, func() {
+func (m *market) initGangsterCreationTicker() {
+	m.clock.AddTicker(gangsterCreationTimeRate, func() {
 		if (len(m.gangsters) < maxGangsterAmountInMarket) {
 			m.createGangster()
 		}

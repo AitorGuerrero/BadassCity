@@ -4,10 +4,6 @@ type Wallet struct {
 	transactions []Transaction
 }
 
-func NewWallet() Wallet {
-	return Wallet{}
-}
-
 type NotEnoughMoney struct {}
 func (NotEnoughMoney) Error() string {
 	return "Not enough money"

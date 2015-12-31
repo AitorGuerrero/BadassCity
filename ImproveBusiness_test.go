@@ -3,10 +3,13 @@ package BadassCity
 import (
 	t "testing"
 	"github.com/AitorGuerrero/BadassCity/economy"
+	"github.com/AitorGuerrero/BadassCity/timedEvents"
+	"github.com/AitorGuerrero/BadassCity/timedEvents/turnsClock"
 )
 
 func TestGivenALocalWithNotBusinessShouldThrow(t *t.T) {
-	l := makeFakeLocal()
+	c := &turnsClock.Clock{}
+	l := makeFakeLocal(c)
 	l.hasBusiness = false
 	err := l.ImproveBusiness()
 
@@ -16,7 +19,8 @@ func TestGivenALocalWithNotBusinessShouldThrow(t *t.T) {
 }
 
 func TestGivenATotallyImprovedBusinessShouldThrow(t *t.T) {
-	l := makeFakeLocal()
+	c := &turnsClock.Clock{}
+	l := makeFakeLocal(c)
 	l.business.level = businessLevel(2)
 	err := l.ImproveBusiness()
 	if _, ok := err.(totallyImprovedBusiness); !ok {
@@ -25,7 +29,8 @@ func TestGivenATotallyImprovedBusinessShouldThrow(t *t.T) {
 }
 
 func TestGivenAOwnerWithNotEnoughMoneyForImproveShouldThrow(t *t.T) {
-	l := makeFakeLocal()
+	c := &turnsClock.Clock{}
+	l := makeFakeLocal(c)
 	l.owner.Wallet.AddTransaction(economy.Transaction{economy.Money(-5)})
 	err := l.ImproveBusiness()
 	if _, ok := err.(economy.NotEnoughMoney); !ok {
@@ -34,7 +39,8 @@ func TestGivenAOwnerWithNotEnoughMoneyForImproveShouldThrow(t *t.T) {
 }
 
 func TestOwnerShouldSpentMoney(t *t.T) {
-	l := makeFakeLocal()
+	c := &turnsClock.Clock{}
+	l := makeFakeLocal(c)
 	l.ImproveBusiness()
 	if l.owner.Wallet.TotalAmount() != 0 {
 		t.Error("Owner should not have money, has:", l.owner.Wallet.TotalAmount())
@@ -42,7 +48,8 @@ func TestOwnerShouldSpentMoney(t *t.T) {
 }
 
 func TestShouldImproveTheBusiness(t *t.T) {
-	l := makeFakeLocal()
+	c := &turnsClock.Clock{}
+	l := makeFakeLocal(c)
 	err := l.ImproveBusiness()
 	if err != nil {
 		t.Error(err)
@@ -52,8 +59,8 @@ func TestShouldImproveTheBusiness(t *t.T) {
 	}
 }
 
-func makeFakeLocal() local {
-	w := economy.NewWallet()
+func makeFakeLocal(c timedEvents.Clock) local {
+	w := economy.Wallet{}
 	w.AddTransaction(economy.Transaction{economy.Money(20)})
 	return local{
 		room: localRoom(2),
@@ -62,6 +69,7 @@ func makeFakeLocal() local {
 		owner: &economy.Merchant{
 			Wallet: w,
 		},
+		clock: c,
 	}
 }
 

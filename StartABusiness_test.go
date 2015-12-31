@@ -2,10 +2,12 @@ package BadassCity
 import (
 	t "testing"
 	"github.com/AitorGuerrero/BadassCity/economy"
+	"github.com/AitorGuerrero/BadassCity/timedEvents/turnsClock"
 )
 
 func TestGivenALocalWithNotEnoughRoomShouldThrow(t *t.T) {
-	l := makeFakeLocal()
+	c := &turnsClock.Clock{}
+	l := makeFakeLocal(c)
 	l.room = 1
 	b := givenABusiness()
 	err := l.StartABusiness(b);
@@ -15,7 +17,8 @@ func TestGivenALocalWithNotEnoughRoomShouldThrow(t *t.T) {
 }
 
 func TestGivenAOwnerWithNotEnoughMoneyShouldThrow(t *t.T) {
-	l := makeFakeLocal()
+	c := &turnsClock.Clock{}
+	l := makeFakeLocal(c)
 	b := givenABusiness()
 	l.owner.Wallet.AddTransaction(economy.Transaction{-5})
 	err := l.StartABusiness(b);
@@ -25,7 +28,8 @@ func TestGivenAOwnerWithNotEnoughMoneyShouldThrow(t *t.T) {
 }
 
 func TestOwnerShouldSpendTheMoney(t *t.T) {
-	l := makeFakeLocal()
+	c := &turnsClock.Clock{}
+	l := makeFakeLocal(c)
 	b := givenABusiness()
 	err := l.StartABusiness(b);
 	if err != nil{

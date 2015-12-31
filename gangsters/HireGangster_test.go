@@ -2,6 +2,7 @@ package gangsters
 import (
 	"testing"
 	"github.com/AitorGuerrero/BadassCity/economy"
+	"github.com/AitorGuerrero/BadassCity/timedEvents/turnsClock"
 )
 
 type TestPayer struct {}
@@ -21,8 +22,14 @@ func TestWhenGangsterIsNotInTheMarketShouldThrow(t *testing.T) {
 }
 
 func TestShouldRemoveGangsterFromMarket(t *testing.T) {
-	g := &Gangster{}
-	m := market{gangsters: []*Gangster{g}}
+	clock := &turnsClock.Clock{}
+	g := &Gangster{
+		clock: clock,
+	}
+	m := market{
+		gangsters: []*Gangster{g},
+		clock: clock,
+	}
 	err := m.HireGangster(TestPayer{}, g)
 	if (err != nil) {
 		t.Error(err)
