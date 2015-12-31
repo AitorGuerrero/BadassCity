@@ -16,6 +16,8 @@ func (localDoesNotHaveABusiness) Error() string {
 }
 
 type local struct {
+	economy.MoneyReceiver
+	economy.MoneyGenerator
 	price       economy.Money
 	owner       *economy.Merchant
 	business    business
@@ -44,7 +46,7 @@ func (l *local) StartABusiness(b business) error {
 	if l.hasEnoughRoom(b.model.neededRoom) {
 		return notEnoughRoom{}
 	}
-	if err, _ := l.owner.Wallet.GetTransaction(l.priceForStartABusiness(b)); err != nil {
+	if err := l.TakeMoney(&l.owner.Wallet, l.priceForStartABusiness(b)); err != nil {
 		return economy.NotEnoughMoney{}
 	}
 	l.business = b
@@ -54,7 +56,7 @@ func (l *local) StartABusiness(b business) error {
 }
 
 func (l *local) collectBenefits() {
-	l.owner.Wallet.AddTransaction(economy.Transaction{l.business.benefits()})
+	l.GenerateMoney(&l.owner.Wallet, l.business.benefits())
 }
 
 func (l *local) initPaymentTicker() {
@@ -67,7 +69,7 @@ func (l *local) ImproveBusiness() (err error) {
 	if err = l.canImproveBusiness(); err != nil {
 		return
 	}
-	if err, _ = l.owner.Wallet.GetTransaction(l.priceForImprove()); err != nil {
+	if err = l.TakeMoney(&l.owner.Wallet, l.priceForImprove()); err != nil {
 		return
 	}
 	if err = l.business.improve(); err != nil {

@@ -65,7 +65,8 @@ func givenAPlayerWithNotEnoughMoney() player {
 }
 
 func givenAPlayerWithMoney(m economy.Money) player {
+	mg := economy.MoneyGenerator{}
 	p := player{}
-	p.Wallet.AddTransaction(economy.Transaction{m})
+	mg.GenerateMoney(&p.Wallet, m)
 	return p
 }

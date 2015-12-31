@@ -29,9 +29,10 @@ func TestGivenATotallyImprovedBusinessShouldThrow(t *t.T) {
 }
 
 func TestGivenAOwnerWithNotEnoughMoneyForImproveShouldThrow(t *t.T) {
+	mg := economy.MoneyGenerator{}
 	c := &turnsClock.Clock{}
 	l := makeFakeLocal(c)
-	l.owner.Wallet.AddTransaction(economy.Transaction{economy.Money(-5)})
+	mg.GenerateMoney(&l.owner.Wallet, economy.Money(-5))
 	err := l.ImproveBusiness()
 	if _, ok := err.(economy.NotEnoughMoney); !ok {
 		t.Error("should throw a notEnoughMoney. Thrown: ", err)
@@ -61,7 +62,8 @@ func TestShouldImproveTheBusiness(t *t.T) {
 
 func makeFakeLocal(c timedEvents.Clock) local {
 	w := economy.Wallet{}
-	w.AddTransaction(economy.Transaction{economy.Money(20)})
+	mg := economy.MoneyGenerator{}
+	mg.GenerateMoney(&w, economy.Money(20))
 	return local{
 		room: localRoom(2),
 		business: makeFakeBusiness(),

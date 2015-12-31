@@ -1,5 +1,5 @@
 package economy
 
-type Transaction struct {
+type transaction struct {
 	Amount Money
 }

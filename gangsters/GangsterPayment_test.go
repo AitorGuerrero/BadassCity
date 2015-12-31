@@ -3,13 +3,14 @@ package gangsters
 import (
 	t "testing"
 	"github.com/AitorGuerrero/BadassCity/economy"
-	"errors"
 	"github.com/AitorGuerrero/BadassCity/timedEvents/turnsClock"
 )
 
-type TestPayerWithNoMoney struct {}
+type TestPayerWithNoMoney struct {
+	wallet economy.Wallet
+}
 func (p TestPayerWithNoMoney) getPayment(economy.Money) (error, economy.Transaction) {
-	return errors.New("Not enoguh money"), economy.Transaction{}
+	return p.wallet.GetTransaction(economy.Money(1))
 }
 
 func TestWhenPayerHasNotMoneyGangsterShouldDecreaseHisLoyalty(t *t.T) {

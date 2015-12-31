@@ -5,9 +5,11 @@ import (
 	"github.com/AitorGuerrero/BadassCity/timedEvents/turnsClock"
 )
 
-type TestPayer struct {}
+type TestPayer struct {
+	wallet *economy.Wallet
+}
 func (p TestPayer) getPayment(economy.Money) (error, economy.Transaction) {
-	return nil, economy.Transaction{}
+	return p.wallet.GetTransaction(1)
 }
 
 func TestWhenGangsterIsNotInTheMarketShouldThrow(t *testing.T) {
