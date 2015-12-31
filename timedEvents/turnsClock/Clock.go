@@ -13,7 +13,7 @@ type Clock struct {
 	timers []*timer
 }
 
-func daysToTurns(d timedEvents.DaysAmount) turn {
+func DaysToTurns(d timedEvents.DaysAmount) turn {
 	return turn(math.Ceil(float64(d) / float64(daysPerTurn)))
 }
 
@@ -24,15 +24,15 @@ func (c *Clock) Next() {
 
 func (c *Clock) AddTicker(days timedEvents.DaysAmount, callback func()) {
 	c.tickers = append(c.tickers, &ticker{
-		turnsForCallback: daysToTurns(days),
-		remainingTurns: daysToTurns(days),
+		turnsForCallback: DaysToTurns(days),
+		remainingTurns: DaysToTurns(days),
 		callback: callback,
 	})
 }
 
 func (c *Clock) AddTTimer(days timedEvents.DaysAmount, callback func()) {
 	c.timers = append(c.timers, &timer{
-		remainingTurns: daysToTurns(days),
+		remainingTurns: DaysToTurns(days),
 		callback: callback,
 	})
 }

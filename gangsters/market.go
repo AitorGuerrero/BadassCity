@@ -2,6 +2,7 @@ package gangsters
 
 import (
 	"github.com/AitorGuerrero/BadassCity/timedEvents"
+	"golang.org/x/crypto/openpgp/errors"
 )
 
 const (
@@ -15,7 +16,9 @@ type market struct {
 	clock timedEvents.Clock
 }
 
-type GangsterNotInTheMarket struct {}
+type GangsterNotInTheMarket struct {
+	errors.StructuralError
+}
 func (GangsterNotInTheMarket) Error () string {
 	return "The gangster is not in the market"
 }
