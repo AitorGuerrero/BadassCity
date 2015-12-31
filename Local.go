@@ -4,7 +4,7 @@ import "github.com/AitorGuerrero/BadassCity/economy"
 type localRoom int
 
 type localOwner struct {
-	merchant
+	economy.Merchant
 }
 
 type localDoesNotHaveABusiness struct{}
@@ -14,7 +14,7 @@ func (localDoesNotHaveABusiness) Error() string {
 
 type local struct {
 	price       economy.Money
-	owner       *merchant
+	owner       *economy.Merchant
 	business    business
 	room        localRoom
 	hasBusiness bool
@@ -32,7 +32,7 @@ func (l local) priceForImprove() economy.Money {
 	return l.business.priceForImprove()
 }
 
-func (l *local) changeOwner(o *merchant) {
+func (l *local) changeOwner(o *economy.Merchant) {
 	l.owner = o
 }
 
@@ -40,7 +40,7 @@ func (l *local) StartABusiness(b business) error {
 	if l.hasEnoughRoom(b.model.neededRoom) {
 		return notEnoughRoom{}
 	}
-	if err, _ := l.owner.wallet.GetTransaction(l.priceForStartABusiness(b)); err != nil {
+	if err, _ := l.owner.Wallet.GetTransaction(l.priceForStartABusiness(b)); err != nil {
 		return economy.NotEnoughMoney{}
 	}
 	l.business = b
@@ -50,7 +50,7 @@ func (l *local) StartABusiness(b business) error {
 }
 
 func (l *local) collectBenefits() {
-	l.owner.wallet.AddTransaction(economy.Transaction{l.business.benefits()})
+	l.owner.Wallet.AddTransaction(economy.Transaction{l.business.benefits()})
 }
 
 func (l *local) initPaymentTicker() {
@@ -63,7 +63,7 @@ func (l *local) ImproveBusiness() (err error) {
 	if err = l.canImproveBusiness(); err != nil {
 		return
 	}
-	if err, _ = l.owner.wallet.GetTransaction(l.priceForImprove()); err != nil {
+	if err, _ = l.owner.Wallet.GetTransaction(l.priceForImprove()); err != nil {
 		return
 	}
 	if err = l.business.improve(); err != nil {
@@ -80,7 +80,7 @@ func (l local) canImproveBusiness() (error) {
 	if l.business.isTotallyImproved() {
 		return totallyImprovedBusiness{}
 	}
-	if !l.owner.wallet.HasEnoughMoney(l.priceForImprove()) {
+	if !l.owner.Wallet.HasEnoughMoney(l.priceForImprove()) {
 		return economy.NotEnoughMoney{}
 	}
 

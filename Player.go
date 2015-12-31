@@ -1,7 +1,8 @@
 package BadassCity
+import "github.com/AitorGuerrero/BadassCity/economy"
 
 type player struct {
-	merchant
+	economy.Merchant
 }
 
 func NewPlayer() player {
@@ -9,11 +10,11 @@ func NewPlayer() player {
 }
 
 func (p *player) BuyLocal(l *local) (err error) {
-	err = p.merchant.wallet.TransferTo(&l.owner.wallet, l.price)
+	err = p.Wallet.TransferTo(&l.owner.Wallet, l.price)
 	if (err != nil) {
 		return
 	}
-	l.changeOwner(&(p.merchant))
+	l.changeOwner(&(p.Merchant))
 
 	return
 }

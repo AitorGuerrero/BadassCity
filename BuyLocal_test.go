@@ -12,7 +12,7 @@ func TestGivenAPlayerWithNotEnoughMoneyShouldThrow(t *t.T) {
 	if (err == nil) {
 		t.Error("Should return error")
 	}
-	if l.owner == &(p.merchant) {
+	if l.owner == &(p.Merchant) {
 		t.Error("Should not change the owner")
 	}
 }
@@ -22,7 +22,7 @@ func TestShouldChangeLocalOwner(t *t.T) {
 	p := givenAPlayerWithEnoughMoney()
 
 	p.BuyLocal(&l)
-	if l.owner != &(p.merchant) {
+	if l.owner != &(p.Merchant) {
 		t.Error("Should change local owner")
 	}
 }
@@ -32,7 +32,7 @@ func TestPlayerShouldHaveANegativeTransaction(t *t.T) {
 	p := givenAPlayerWithEnoughMoney()
 
 	p.BuyLocal(&l)
-	if (p.merchant.wallet.TotalAmount() != 0) {
+	if (p.Wallet.TotalAmount() != 0) {
 		t.Error("Should have a negative transaction")
 	}
 }
@@ -43,7 +43,7 @@ func TestOwnerShouldHaveATransaction(t *t.T) {
 	o := l.owner
 
 	p.BuyLocal(&l)
-	if (o.wallet.TotalAmount() != 30) {
+	if (o.Wallet.TotalAmount() != 30) {
 		t.Error("Should have a transaction")
 	}
 }
@@ -51,7 +51,7 @@ func TestOwnerShouldHaveATransaction(t *t.T) {
 func givenALocalOwnedByNpcOwner() (l local) {
 	l = local{
 		price: economy.Money(30),
-		owner: &merchant{},
+		owner: &economy.Merchant{},
 	}
 	return
 }
@@ -66,6 +66,6 @@ func givenAPlayerWithNotEnoughMoney() player {
 
 func givenAPlayerWithMoney(m economy.Money) player {
 	p := player{}
-	p.wallet.AddTransaction(economy.Transaction{m})
+	p.Wallet.AddTransaction(economy.Transaction{m})
 	return p
 }

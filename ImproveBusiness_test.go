@@ -26,7 +26,7 @@ func TestGivenATotallyImprovedBusinessShouldThrow(t *t.T) {
 
 func TestGivenAOwnerWithNotEnoughMoneyForImproveShouldThrow(t *t.T) {
 	l := makeFakeLocal()
-	l.owner.wallet.AddTransaction(economy.Transaction{economy.Money(-5)})
+	l.owner.Wallet.AddTransaction(economy.Transaction{economy.Money(-5)})
 	err := l.ImproveBusiness()
 	if _, ok := err.(economy.NotEnoughMoney); !ok {
 		t.Error("should throw a notEnoughMoney. Thrown: ", err)
@@ -36,8 +36,8 @@ func TestGivenAOwnerWithNotEnoughMoneyForImproveShouldThrow(t *t.T) {
 func TestOwnerShouldSpentMoney(t *t.T) {
 	l := makeFakeLocal()
 	l.ImproveBusiness()
-	if l.owner.wallet.TotalAmount() != 0 {
-		t.Error("Owner should not have money, has:", l.owner.wallet.TotalAmount())
+	if l.owner.Wallet.TotalAmount() != 0 {
+		t.Error("Owner should not have money, has:", l.owner.Wallet.TotalAmount())
 	}
 }
 
@@ -59,8 +59,8 @@ func makeFakeLocal() local {
 		room: localRoom(2),
 		business: makeFakeBusiness(),
 		hasBusiness: true,
-		owner: &merchant{
-			wallet: w,
+		owner: &economy.Merchant{
+			Wallet: w,
 		},
 	}
 }
