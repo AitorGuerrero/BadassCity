@@ -1,5 +1,6 @@
 package BadassCity
 import "github.com/AitorGuerrero/BadassCity/economy"
+import "github.com/AitorGuerrero/BadassCity/timedEvents"
 
 type localRoom int
 
@@ -54,7 +55,7 @@ func (l *local) collectBenefits() {
 }
 
 func (l *local) initPaymentTicker() {
-	initTicker(localPaymentDuration, func() {
+	timedEvents.InitTicker(timedEvents.LocalPaymentDuration, func() {
 		l.collectBenefits()
 	})
 }
