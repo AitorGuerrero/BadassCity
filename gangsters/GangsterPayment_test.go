@@ -14,19 +14,19 @@ func (p TestPayerWithNoMoney) getPayment(economy.Money) (error, economy.Transact
 
 func TestWhenPayerHasNotMoneyGangsterShouldDecreaseHisLoyalty(t *t.T) {
 	clock := &turnsClock.Clock{}
-	gangster := &Gangster{clock: clock}
+	g := &gangster{clock: clock}
 	m := &market{
 		clock: clock,
-		gangsters: []*Gangster{gangster},
+		gangsters: []*gangster{g},
 	}
-	err := m.HireGangster(TestPayerWithNoMoney{}, gangster)
+	err := m.HireGangster(TestPayerWithNoMoney{}, g)
 	if (err != nil) {
 		t.Error(err)
 	}
 	for i := 0; i < int(turnsClock.DaysToTurns(daysForPayment)); i++ {
 		clock.Next()
 	}
-	if (gangster.loyalty != -1) {
+	if (g.loyalty != -1) {
 		t.Error("Should decrease loyalty")
 	}
 }

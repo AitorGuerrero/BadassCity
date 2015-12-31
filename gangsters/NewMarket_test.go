@@ -15,7 +15,7 @@ func TestShouldCreateInitialGangsters(t *t.T) {
 func TestShouldCreateGangsterInTime(t *t.T) {
 	clock := &turnsClock.Clock{}
 	m := NewMarket(clock)
-	m.gangsters = []*Gangster{}
+	m.gangsters = []*gangster{}
 	for i := 0; i < int(gangsterCreationTimeRate) * 2; i++ {
 		clock.Next()
 	}

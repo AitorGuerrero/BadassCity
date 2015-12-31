@@ -12,7 +12,7 @@ func (p TestPayer) getPayment(economy.Money) (error, economy.Transaction) {
 
 func TestWhenGangsterIsNotInTheMarketShouldThrow(t *testing.T) {
 	m := market{}
-	err := m.HireGangster(TestPayer{}, &Gangster{})
+	err := m.HireGangster(TestPayer{}, &gangster{})
 	if err == nil {
 		t.Error("Should return error")
 	}
@@ -23,11 +23,11 @@ func TestWhenGangsterIsNotInTheMarketShouldThrow(t *testing.T) {
 
 func TestShouldRemoveGangsterFromMarket(t *testing.T) {
 	clock := &turnsClock.Clock{}
-	g := &Gangster{
+	g := &gangster{
 		clock: clock,
 	}
 	m := market{
-		gangsters: []*Gangster{g},
+		gangsters: []*gangster{g},
 		clock: clock,
 	}
 	err := m.HireGangster(TestPayer{}, g)

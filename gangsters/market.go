@@ -12,7 +12,7 @@ const (
 )
 
 type market struct {
-	gangsters []*Gangster
+	gangsters []*gangster
 	clock timedEvents.Clock
 }
 
@@ -30,11 +30,11 @@ func NewMarket(clock timedEvents.Clock) *market {
 	return m
 }
 
-func (m market) Gangsters () []*Gangster {
+func (m market) Gangsters () []*gangster {
 	return m.gangsters
 }
 
-func (m *market) HireGangster(p payer, g *Gangster) error {
+func (m *market) HireGangster(p payer, g *gangster) error {
 	err := m.detachGangster(g)
 	if (err != nil) {
 		return err
@@ -51,10 +51,10 @@ func (m *market) createInitialGangsters () {
 }
 
 func (m *market) createGangster() {
-	m.gangsters = append(m.gangsters, &Gangster{clock: m.clock})
+	m.gangsters = append(m.gangsters, &gangster{clock: m.clock})
 }
 
-func (m market) gangsterIndex(g *Gangster) (err error, matchingIndex int) {
+func (m market) gangsterIndex(g *gangster) (err error, matchingIndex int) {
 	matchingIndex = -1
 	for index, sg := range m.gangsters {
 		if (sg == g) {
@@ -68,7 +68,7 @@ func (m market) gangsterIndex(g *Gangster) (err error, matchingIndex int) {
 	return
 }
 
-func (m *market) detachGangster(g *Gangster) error {
+func (m *market) detachGangster(g *gangster) error {
 	err, gangsterIndex := m.gangsterIndex(g)
 	if err != nil {
 		return err
