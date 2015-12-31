@@ -21,7 +21,10 @@ func TestShouldChangeLocalOwner(t *t.T) {
 	l := givenALocalOwnedByNpcOwner()
 	p := givenAPlayerWithEnoughMoney()
 
-	p.BuyLocal(&l)
+	err := p.BuyLocal(&l)
+	if (err != nil) {
+		t.Error(err)
+	}
 	if l.owner != &(p.Merchant) {
 		t.Error("Should change local owner")
 	}
@@ -65,8 +68,7 @@ func givenAPlayerWithNotEnoughMoney() player {
 }
 
 func givenAPlayerWithMoney(m economy.Money) player {
-	mg := economy.MoneyGenerator{}
 	p := player{}
-	mg.GenerateMoney(&p.Wallet, m)
+	economy.GenerateMoney(&p.Wallet, m)
 	return p
 }

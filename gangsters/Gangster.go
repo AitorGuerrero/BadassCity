@@ -12,12 +12,13 @@ const (
 )
 
 type payer interface {
-	getPayment(economy.Money) (error, economy.Transaction)
+	getPayment(economy.Wallet, economy.Money) (error)
 }
 
 type loyalty int
 
 type gangster struct {
+	economy.MoneyReceiver
 	payer payer
 	clock timedEvents.Clock
 	loyalty loyalty
