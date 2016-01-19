@@ -9,8 +9,9 @@ import (
 type TestPayerWithNoMoney struct {
 	wallet economy.Wallet
 }
-func (p TestPayerWithNoMoney) getPayment(economy.Money) (error, economy.Transaction) {
-	return p.wallet.GetTransaction(economy.Money(1))
+
+func (p TestPayerWithNoMoney) getPayment(economy.MoneyReceiver, economy.Money) (error) {
+	return economy.NotEnoughMoney{}
 }
 
 func TestWhenPayerHasNotMoneyGangsterShouldDecreaseHisLoyalty(t *t.T) {

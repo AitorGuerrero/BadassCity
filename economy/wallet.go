@@ -22,16 +22,19 @@ func (from *Wallet) TransferTo (to *Wallet, amount Money) (err error) {
 func (w *Wallet) TotalAmount() (amount Money) {
 	var positiveAmount, negativeAmount int
 	for _, t := range w.incomingTransactions {
-		positiveAmount += int(t.Amount)
+		positiveAmount += int(t.amount)
 	}
 	for _, t := range w.outcomingTransactions {
-		negativeAmount += int(t.Amount)
+		negativeAmount += int(t.amount)
 	}
 	return Money(positiveAmount - negativeAmount)
 }
 
 func (w *Wallet) HasEnoughMoney(m Money) bool {
 	return w.TotalAmount() >= m
+}
+
+func (w *Wallet) GiveMoney(Money, mr MoneyReceiver) {
 }
 
 func (w *Wallet) generateTransaction(a Money) (err error, t *transaction) {

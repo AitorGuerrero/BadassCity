@@ -12,26 +12,20 @@ const (
 )
 
 type payer interface {
-	getPayment(economy.Wallet, economy.Money) (error)
+	getPayment(economy.MoneyReceiver, economy.Money) (error)
 }
 
 type loyalty int
 
 type gangster struct {
-	economy.MoneyReceiver
 	payer payer
 	clock timedEvents.Clock
 	loyalty loyalty
 }
 
-func (g *gangster) changePayer(p payer) {
+func (g *gangster) 	changePayer(p payer) {
 	g.payer = p
-	g.clock.AddTicker(daysForPayment, func() {
-		err, _ := p.getPayment(g.payment())
-		if err != nil {
-			g.decreaseLoyalty(loyaltyLossForNotPayed)
-		}
-	})
+	g.initPaymentTicker()
 }
 
 func (g *gangster) payment() economy.Money {
@@ -40,4 +34,17 @@ func (g *gangster) payment() economy.Money {
 
 func (g *gangster) decreaseLoyalty(l loyalty) {
 	g.loyalty = g.loyalty - loyalty(math.Abs(float64(l)))
+}
+
+func (g *gangster) initPaymentTicker() {
+	g.clock.AddTicker(daysForPayment, func() {
+		err := g.payer.getPayment(g, g.payment())
+		if err != nil {
+			g.decreaseLoyalty(loyaltyLossForNotPayed)
+		}
+	})
+}
+
+func (g *gangster) ReceiveMoney(m economy.Money, w *economy.Wallet) {
+	economy.Consume(w, m)
 }

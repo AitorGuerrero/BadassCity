@@ -8,8 +8,8 @@ import (
 type TestPayer struct {
 	wallet *economy.Wallet
 }
-func (p TestPayer) getPayment(economy.Money) (error, economy.Transaction) {
-	return p.wallet.GetTransaction(1)
+func (p TestPayer) getPayment(economy.MoneyReceiver, economy.Money) (error) {
+	return economy.NotEnoughMoney{}
 }
 
 func TestWhenGangsterIsNotInTheMarketShouldThrow(t *testing.T) {

@@ -20,7 +20,7 @@ func TestGivenAOwnerWithNotEnoughMoneyShouldThrow(t *t.T) {
 	c := &turnsClock.Clock{}
 	l := makeFakeLocal(c)
 	b := givenABusiness()
-	economy.TakeMoney(&l.owner.Wallet, economy.Money(5))
+	economy.Consume(&l.owner.Wallet, economy.Money(5))
 	err := l.StartABusiness(b);
 	if _, ok := err.(economy.NotEnoughMoney); !ok{
 		t.Error("should throw notEnoughMoney error. Thrown: ", err)

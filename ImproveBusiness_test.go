@@ -31,7 +31,7 @@ func TestGivenATotallyImprovedBusinessShouldThrow(t *t.T) {
 func TestGivenAOwnerWithNotEnoughMoneyForImproveShouldThrow(t *t.T) {
 	c := &turnsClock.Clock{}
 	l := makeFakeLocal(c)
-	economy.TakeMoney(&l.owner.Wallet, economy.Money(5))
+	economy.Consume(&l.owner.Wallet, economy.Money(5))
 	err := l.ImproveBusiness()
 	if _, ok := err.(economy.NotEnoughMoney); !ok {
 		t.Error("should throw a notEnoughMoney. Thrown: ", err)

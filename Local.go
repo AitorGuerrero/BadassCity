@@ -44,7 +44,7 @@ func (l *local) StartABusiness(b business) error {
 	if l.hasEnoughRoom(b.model.neededRoom) {
 		return notEnoughRoom{}
 	}
-	if err := economy.TakeMoney(&l.owner.Wallet, l.priceForStartABusiness(b)); err != nil {
+	if err := economy.Consume(&l.owner.Wallet, l.priceForStartABusiness(b)); err != nil {
 		return economy.NotEnoughMoney{}
 	}
 	l.business = b
@@ -67,7 +67,7 @@ func (l *local) ImproveBusiness() (err error) {
 	if err = l.canImproveBusiness(); err != nil {
 		return
 	}
-	if err = economy.TakeMoney(&l.owner.Wallet, l.priceForImprove()); err != nil {
+	if err = economy.Consume(&l.owner.Wallet, l.priceForImprove()); err != nil {
 		return
 	}
 	if err = l.business.improve(); err != nil {
