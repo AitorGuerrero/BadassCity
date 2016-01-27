@@ -1,25 +1,26 @@
 package economy
 
-type Wallet struct {
+type wallet struct {
 	incomingTransactions []*transaction
 	outcomingTransactions []*transaction
 }
 
-type NotEnoughMoney struct {}
-func (NotEnoughMoney) Error() string {
-	return "Not enough money"
-}
-
-func (from *Wallet) TransferTo (to *Wallet, amount Money) (err error) {
-	err, t := from.generateTransaction(amount)
-	if err != nil {
-		return
-	}
-	to.incomingTransactions = append(to.incomingTransactions, t)
+func (this *wallet) receiveTransaction (t *transaction) {
+	this.incomingTransactions = append(this.incomingTransactions, t)
 	return
 }
 
-func (w *Wallet) TotalAmount() (amount Money) {
+func (w *wallet) generateTransaction(amount Money) (err error, t *transaction) {
+	if !w.hasEnoughMoney(amount) {
+		err = NotEnoughMoney{}
+		return
+	}
+	t = &transaction{amount}
+	w.outcomingTransactions = append(w.outcomingTransactions, t)
+	return
+}
+
+func (w *wallet) totalAmount() (amount Money) {
 	var positiveAmount, negativeAmount int
 	for _, t := range w.incomingTransactions {
 		positiveAmount += int(t.amount)
@@ -30,19 +31,6 @@ func (w *Wallet) TotalAmount() (amount Money) {
 	return Money(positiveAmount - negativeAmount)
 }
 
-func (w *Wallet) HasEnoughMoney(m Money) bool {
-	return w.TotalAmount() >= m
-}
-
-func (w *Wallet) GiveMoney(Money, mr MoneyReceiver) {
-}
-
-func (w *Wallet) generateTransaction(a Money) (err error, t *transaction) {
-	if !w.HasEnoughMoney(a) {
-		err = NotEnoughMoney{}
-		return
-	}
-	t = &transaction{a}
-	w.outcomingTransactions = append(w.outcomingTransactions, t)
-	return
+func (w *wallet) hasEnoughMoney(m Money) bool {
+	return w.totalAmount() >= m
 }

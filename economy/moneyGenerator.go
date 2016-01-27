@@ -1,5 +1,12 @@
 package economy
 
-func GenerateMoney(w *Wallet, m Money) {
-	w.incomingTransactions = append(w.incomingTransactions, &transaction{m})
+type MoneyGenerator struct {}
+
+func (this MoneyGenerator) GenerateMoney(receiver moneyReceiver, amount Money) {
+	_, t := this.giveTransaction(amount)
+	receiver.receiveTransaction(t)
+}
+
+func (MoneyGenerator) giveTransaction(amount Money) (error, *transaction) {
+	return nil, &transaction{amount}
 }
