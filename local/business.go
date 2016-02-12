@@ -1,16 +1,8 @@
-package BadassCity
-import "github.com/AitorGuerrero/BadassCity/economy"
+package local
+
+import "github.com/AitorGuerrero/goConomy"
 
 type businessLevel int
-
-type notEnoughRoom struct {}
-func (notEnoughRoom) Error() string {
-	return "Not enough room"
-}
-type totallyImprovedBusiness struct {}
-func (totallyImprovedBusiness) Error() string {
-	return "Totally improved business"
-}
 
 func (l businessLevel) increase() businessLevel {
 	return businessLevel(int(l)+1)
@@ -30,19 +22,19 @@ func (b business) isTotallyImproved() bool {
 	return b.level.isGreaterOrEqualThan(b.model.maxLevel)
 }
 
-func (b business) priceForImprovePerRoom() economy.Money {
+func (b business) priceForImprovePerRoom() goConomy.Money {
 	return b.model.pricesForImprovePerRoom[b.level]
 }
 
-func (b business) benefitsPerRoom() economy.Money {
+func (b business) benefitsPerRoom() goConomy.Money {
 	return b.model.revenueByLevel[b.level]
 }
 
-func (b business) benefits() economy.Money {
+func (b business) benefits() goConomy.Money {
 	return b.benefitsPerRoom().Multiply(float32(b.room))
 }
 
-func (b business) priceForImprove() economy.Money {
+func (b business) priceForImprove() goConomy.Money {
 	return b.priceForImprovePerRoom().Multiply(float32(b.room))
 }
 
