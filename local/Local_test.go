@@ -4,6 +4,7 @@ import (
 	t "testing"
 	"github.com/AitorGuerrero/BadassCity/timedEvents/turnsClock"
 	"github.com/AitorGuerrero/goConomy"
+	"github.com/AitorGuerrero/BadassCity/timedEvents"
 )
 
 type testOwner struct {
@@ -50,7 +51,7 @@ func TestGivenAOwnerWithNotEnoughMoneyWhenAskedToStartABussinessShouldReturnErro
 	}
 }
 
-func TestWhenAskedToStartABussinessThenStartsABussinessInTheLocal(t *t.T) {
+func TestWhenAskedToStartABussinessThenLocalBusinessShouldHaveLevel1(t *t.T) {
 	clock := turnsClock.Clock{}
 	o := testOwner{}
 	mg := goConomy.MoneyGenerator{}
@@ -67,6 +68,9 @@ func TestWhenAskedToStartABussinessThenStartsABussinessInTheLocal(t *t.T) {
 	err := l.StartABusiness(bm)
 	if (nil != err) {
 		t.Error(err)
+	}
+	if l.businessLevel() != businessLevel(1) {
+		t.Error("Should have level 1. Has level", l.businessLevel())
 	}
 }
 
@@ -139,5 +143,32 @@ func TestShouldImproveTheBusiness(t *t.T) {
 	err := local.ImproveBusiness()
 	if nil != err {
 		t.Error(err)
+	}
+}
+
+func TestStartingABusinessAndPassedAWeekShouldReturnBenefitsPassingTheTime(t *t.T) {
+	clock := turnsClock.Clock{}
+	o := testOwner{}
+	bm := businessModel{
+		maxLevel: businessLevel(1),
+		pricesForImprovePerRoom: map[businessLevel]goConomy.Money{
+			businessLevel(2): goConomy.Money(1),
+		},
+		revenueByLevel: map[businessLevel]goConomy.Money{
+			businessLevel(1): goConomy.Money(2),
+		},
+	}
+	local := local{
+		owner: &o,
+		clock: &clock,
+		room: localRoom(1),
+	}
+	err := local.StartABusiness(bm)
+	if nil != err {
+		t.Error(err)
+	}
+	clock.Advance(timedEvents.Week)
+	if o.TotalMoneyAmount() != 2 {
+		t.Error("Should have 2 money. Have", o.TotalMoneyAmount())
 	}
 }

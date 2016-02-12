@@ -27,6 +27,7 @@ func (l *local) StartABusiness(bm businessModel) error {
 	l.business = business{
 		model: bm,
 		room: l.room,
+		level: businessLevel(1),
 	}
 	l.hasBusiness = true
 	l.initPaymentTicker()
@@ -80,4 +81,8 @@ func (l local) canImproveBusiness() error {
 		return totallyImprovedBusiness{}
 	}
 	return nil
+}
+
+func (l local) businessLevel() businessLevel {
+	return l.business.level
 }

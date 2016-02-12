@@ -23,6 +23,12 @@ func (c *Clock) Next() {
 	c.advanceTimers()
 }
 
+func (c *Clock) Advance(a timedEvents.DaysAmount) {
+	for i := 0; i < int(a); i++ {
+		c.Next()
+	}
+}
+
 func (c *Clock) AddTicker(days timedEvents.DaysAmount, callback func()) {
 	c.tickers = append(c.tickers, &ticker{
 		turnsForCallback: DaysToTurns(days),
