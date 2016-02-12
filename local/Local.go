@@ -41,7 +41,7 @@ func (l *local) ImproveBusiness() (err error) {
 	if err = l.ConsumeMoney(l.owner, l.priceForImprove()); err != nil {
 		return
 	}
-	err = l.business.improve()
+	l.business.improve()
 
 	return
 }
@@ -79,9 +79,5 @@ func (l local) canImproveBusiness() error {
 	if l.business.isTotallyImproved() {
 		return totallyImprovedBusiness{}
 	}
-	if !l.owner.HasEnoughMoney(l.priceForImprove()) {
-		return goConomy.NotEnoughMoney{}
-	}
-
 	return nil
 }

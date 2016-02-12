@@ -23,7 +23,7 @@ func (b business) isTotallyImproved() bool {
 }
 
 func (b business) priceForImprovePerRoom() goConomy.Money {
-	return b.model.pricesForImprovePerRoom[b.level]
+	return b.model.pricesForImprovePerRoom[businessLevel(int(b.level) + 1)]
 }
 
 func (b business) benefitsPerRoom() goConomy.Money {
@@ -38,11 +38,6 @@ func (b business) priceForImprove() goConomy.Money {
 	return b.priceForImprovePerRoom().Multiply(float32(b.room))
 }
 
-func (b *business) improve() error {
-	if b.isTotallyImproved() {
-		return totallyImprovedBusiness{}
-	}
+func (b *business) improve() {
 	b.level = b.level.increase()
-
-	return nil
 }
